@@ -1,7 +1,4 @@
-// =============================
-//  One Card TestLogic
-// =============================
-const testCard = document.getElementById("testCard");
+//********************************************* Java Script for Grid ***********************/
 const revealsEl = document.getElementById("reveals");
 const timerEl = document.getElementById("timer");
 const flipSound = new Audio("assets/flip.mp3");
@@ -11,28 +8,89 @@ let timer = 0; // Timer in seconds
 let timerInterval = null;
 let startTime = null; // Timestamp when timer starts
 
-// Flip the card
-testCard.addEventListener("click", () => {
-  if (testCard.classList.contains("flipped")) return;
+// Flip card function
+function flipCard(cardElement) {
+  cardElement.classList.toggle('flipped');
+}
 
-  testCard.classList.add("flipped");
 
-  // Play flip sound
-  flipSound.currentTime = 0;
-  flipSound.play();
+// Card data - 8 unique cards
+const cardData = [
+  { id: 1, name: 'bog', image: 'assets/bog.png' },
+  { id: 2, name: 'bil', image: 'assets/bil.png' },
+  { id: 3, name: 'cykel', image: 'assets/cykel.png' },
+  { id: 4, name: 'skole', image: 'assets/skole.png' },
+  { id: 5, name: 'sol', image: 'assets/sol.png' },
+  { id: 6, name: 'stol', image: 'assets/stol.png' },
+  { id: 7, name: 'bold', image: 'assets/bold.png' },
+  { id: 8, name: 'træ', image: 'assets/træ.png' }
+];
+// Duplicate cards so each appears twice
+function duplicateCards(cards) {
+  return cards.flatMap(card => [
+    { ...card },
+    { ...card }
+  ]);
+}
 
-  // Increment reveals counter
-  reveals++;
-  revealsEl.textContent = reveals;
 
-  // Start timer on first reveal
-  if (reveals === 1) startTimer();
+// Shuffle array using Fisher-Yates algorithm
+function shuffleCards(cards) {
+  const shuffled = [...cards]; // Make a copy
+  
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  
+  return shuffled;
+}
 
-  // Flip back after 1 second for repeated testing
-  setTimeout(() => {
-    testCard.classList.remove("flipped");
-  }, 1000);
-});
+// Initialize game cards
+let gameCards = shuffleCards(duplicateCards(cardData));
+
+
+// Generate all cards and add to grid
+function createCards() {
+  startTimer()
+  const gridContainer = document.getElementById('card-grid');
+  gridContainer.innerHTML = ''; // Clear any existing cards
+  
+  gameCards.forEach((card, index) => {
+    // Create card HTML
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'flip-card';
+    cardDiv.id = `card-${index}`;
+    cardDiv.setAttribute('data-card-id', card.id);
+    cardDiv.addEventListener('click', () => {
+      const flipCardElement = cardDiv.querySelector('.flip-card');
+       flipCard(flipCardElement);
+       reveals++;
+       revealsEl.textContent = reveals;
+    });
+
+    
+    cardDiv.innerHTML = `
+       <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="${card.image}" alt="${card.name}" />
+      </div>
+      <div class="flip-card-back">
+        <img src="assets/back-card.png" alt="card back" />
+      </div>
+    </div>
+  </div>
+    `;
+    
+    gridContainer.appendChild(cardDiv);
+  });
+}
+document.addEventListener('DOMContentLoaded', createCards);
+
+
+//*************************************** End of Grid  */
+
 
 // =============================
 // Timer Functions
@@ -75,3 +133,5 @@ restartButton.addEventListener("click", () => {
   revealsEl.textContent = reveals;
   resetTimer();
 });
+
+

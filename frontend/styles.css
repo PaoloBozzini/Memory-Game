@@ -101,3 +101,34 @@ body {
   font-size: 1rem;
   color: #666;
 }
+
+
+/* grid css */
+/* ============================= */
+/* GAME BOARD GRID */
+/* ============================= */
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 150px);
+  grid-template-rows: repeat(4, 150px);
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* Remove big margins from cards */
+.flip-card {
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .game-board {
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: auto;
+  }
+
+  .flip-card {
+    width: 120px;
+    height: 120px;
+  }
+}
