@@ -1,40 +1,57 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Danish Memory Game</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="restart-button.css" />
+  </head>
 
-     <link rel="stylesheet" href="styles.css">
-     
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <h1>Learn Danish - Memory Game</h1>
+    </header>
 
-</head>
-<body>
+    <!-- Stats -->
+    <section class="stats">
+      <div class="stat-box">
+        <span class="stat-label">Reveals:</span>
+        <span id="reveals">0</span>
+      </div>
 
-<h1>Card Flip</h1>
+      <div class="stat-box">
+        <span class="stat-label">Time:</span>
+        <span id="timer">00:00</span>
+      </div>
+    </section>
 
-
-<div id="myFlipCard" class="flip-card">
-  <div class="flip-card-inner">
-    <div class="flip-card-front">
-      <img src="assets/skal.png" />
+    <!-- One Card  Test-->
+    <div id="testCard" class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="assets/sol.png" alt="Test Card Front" />
+        </div>
+        <div class="flip-card-back">
+          <img src="assets/card-back.png" alt="Test Card Back" />
+        </div>
+      </div>
     </div>
-    <div class="flip-card-back">
-      <img src="assets/back.png" />
-    </div>
-  </div>
-</div>
 
-<script>
-  var card = document.getElementById("myFlipCard");
+    <!-- Restart Button -->
+    <button id="restartButton" class="restart-button">
+      <span class="icon">⟳</span> Restart
+    </button>
 
-  card.addEventListener("click", function () {
-    card.classList.add("flipped");
-
-    setTimeout(function () {
-      card.classList.remove("flipped");
-    }, 1000);
-  });
-</script>
-
-</script>
-</body>
+    <footer class="footer">
+      <p>&copy; ReMi Studios. All rights reserved.</p>
+      </footer>
+    <!-- Scripts -->
+    <script src="script.js"></script>
+  </body>
 </html>

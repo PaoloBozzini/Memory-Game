@@ -1,0 +1,35 @@
+.restart-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Luckiest Guy", cursive;
+  color: #fff;
+
+  background: linear-gradient(180deg, #8fd400, #5fa800);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #e7b652;
+  margin-top: 10rem;
+}
+
+/* Hover */
+.restart-button:hover {
+  transform: translateY(-2px);
+}
+
+
+/* Active (pressed) */
+.restart-button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #e7b652;
+}
+
+/* Focus */
+.restart-button:focus-visible {
+  outline: 3px solid #00abe1;
+  outline-offset: 4px;
+}
