@@ -3,15 +3,58 @@ const revealsEl = document.getElementById("reveals");
 const timerEl = document.getElementById("timer");
 const flipSound = new Audio("assets/flip.mp3");
 
+// Game state
 let reveals = 0; // Count of revealed cards
 let timer = 0; // Timer in seconds
 let timerInterval = null;
 let startTime = null; // Timestamp when timer starts
+let flippedCards = [];
+let counter = 0;
+let canClick = true;
+
+// Update displays
+function updateCounter() {
+  document.getElementById('reveals').textContent = counter;
+}
 
 // Flip card function
 function flipCard(cardElement) {
-  cardElement.classList.toggle('flipped');
+  
+  if (!canClick) return;
+  if (cardElement.classList.contains('flipped')) return;
+  
+  if (counter === 0) {
+    startTimer();
+  }
+  
+  cardElement.classList.add('flipped');
+  flippedCards.push(cardElement);
+  counter++;
+  updateCounter();
+
+  
+    setTimeout(() => {
+      if (flippedCards.length === 1){
+      flippedCards[0].classList.remove('flipped');  
+      flippedCards = [];
+      canClick = true;}
+    }, 1500);
+
+  
+  
+  if (flippedCards.length === 2) {
+    canClick = false;
+    
+    setTimeout(() => {
+      flippedCards[0].classList.remove('flipped');
+      flippedCards[1].classList.remove('flipped');
+      flippedCards = [];
+      canClick = true;
+    }, 1500);
+  }
+  
 }
+
 
 
 // Card data - 8 unique cards
@@ -52,7 +95,6 @@ let gameCards = shuffleCards(duplicateCards(cardData));
 
 // Generate all cards and add to grid
 function createCards() {
-  startTimer()
   const gridContainer = document.getElementById('card-grid');
   gridContainer.innerHTML = ''; // Clear any existing cards
   
@@ -65,8 +107,7 @@ function createCards() {
     cardDiv.addEventListener('click', () => {
         const flipCardElement = cardDiv.querySelector('.flip-card');
         flipCard(flipCardElement);
-        reveals++;
-        revealsEl.textContent = reveals;
+  
     });
 
     
