@@ -63,24 +63,25 @@ function createCards() {
     cardDiv.id = `card-${index}`;
     cardDiv.setAttribute('data-card-id', card.id);
     cardDiv.addEventListener('click', () => {
-      const flipCardElement = cardDiv.querySelector('.flip-card');
-       flipCard(flipCardElement);
-       reveals++;
-       revealsEl.textContent = reveals;
+        const flipCardElement = cardDiv.querySelector('.flip-card');
+        flipCard(flipCardElement);
+        reveals++;
+        revealsEl.textContent = reveals;
     });
 
     
     cardDiv.innerHTML = `
-       <div class="flip-card">
+    <div class="flip-card">
     <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="${card.image}" alt="${card.name}" />
-      </div>
       <div class="flip-card-back">
-        <img src="assets/back-card.png" alt="card back" />
+          <img src="assets/back-card.png" alt="card back" />
       </div>
+      <div class="flip-card-front">
+          <img src="${card.image}" alt="${card.name}" />
+      </div>
+
     </div>
-  </div>
+    </div>
     `;
     
     gridContainer.appendChild(cardDiv);
