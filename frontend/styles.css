@@ -68,6 +68,7 @@ body {
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
 }
 
+
 .flip-card-front,
 .flip-card-back {
   position: absolute;
