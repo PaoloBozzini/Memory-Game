@@ -13,8 +13,8 @@ let counter = 0;
 let canClick = true;
 
 // Update displays
-function updateCounter() {
-  document.getElementById("reveals").textContent = counter;
+function updateCounter(number) {
+  document.getElementById("reveals").textContent = number;
 }
 
 // Flip card function
@@ -29,7 +29,7 @@ function flipCard(cardElement) {
   cardElement.classList.add("flipped");
   flippedCards.push(cardElement);
   counter++;
-  updateCounter();
+  updateCounter(counter);
 
   setTimeout(() => {
     if (flippedCards.length === 1) {
@@ -69,7 +69,7 @@ function duplicateCards(cards) {
 
 // Shuffle array using Fisher-Yates algorithm
 function shuffleCards(cards) {
-  const shuffled = [...cards]; // Make a copy
+  const shuffled = JSON.parse(JSON.stringify(cards))// DEEP Copy. Make a copy
 
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
