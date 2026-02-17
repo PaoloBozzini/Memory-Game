@@ -111,6 +111,8 @@ function showWinMessage() {
 //   { id: 8, name: "træ", image: "assets/træ.png" },
 // ];
 
+let cardData = []; // Will be populated from API
+
 // Fetch card data from API
 function fetchCardData(limit = 8) {
   return fetch(`http://localhost:3000/cards/all-cards/${limit}`)
@@ -119,6 +121,7 @@ function fetchCardData(limit = 8) {
       return response.json(); // parse JSON
     })
     .then((data) => {
+
       if (!data.length) {
         alert("Failed to load cards");
         return [];
