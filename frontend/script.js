@@ -5,116 +5,107 @@ const flipSound = new Audio("assets/flip.mp3");
 const TOTAL_PAIRS = 8;
 
 // Game state
-let reveals = 0; // Count of revealed cards
-let timer = 0; // Timer in seconds
-let timerInterval = null;
-let startTime = null; // Timestamp when timer starts
-let flippedCards = [];
-let counter = 0;
-let canClick = true;
-let matchedPairs = 0;
+const gameState={
+timer : 0,// Timer in seconds
+timerInterval : null,
+startTime : null, // Timestamp when timer starts
+flippedCards : [],
+counter : 0,
+canClick : true,
+matchedPairs : 0,
+gameCards : [],
+cardData : [], // Will be populated from API
+}
+
 
 // Update displays
-function updateCounter() {
-  document.getElementById("reveals").textContent = counter;
+function updateCounter(state) {
+  document.getElementById("reveals").textContent = state.counter;
 }
 
 // Flip card function
-function flipCard(cardElement) {
-  if (!canClick) return;
+function flipCard(cardElement,state) {
+  if (!state.canClick) return;
   if (cardElement.classList.contains("flipped")) return;
 
-  if (counter === 0) {
-    startTimer();
+  if (state.counter === 0) {
+    startTimer(state);
   }
 
   cardElement.classList.add("flipped");
-  flippedCards.push(cardElement);
-  counter++;
-  updateCounter();
+  state.flippedCards.push(cardElement);
+  state.counter++;
+  updateCounter(state);
 
-  if (flippedCards.length === 2) {
-    canClick = false;
+  if (state.flippedCards.length === 2) {
+    state.canClick = false;
 
     // Get two CardElement Id
-    const card1Id = flippedCards[0].getAttribute("data-card-id");
-    const card2Id = flippedCards[1].getAttribute("data-card-id");
+    const card1Id = state.flippedCards[0].getAttribute("data-card-id");
+    const card2Id = state.flippedCards[1].getAttribute("data-card-id");
 
     if (card1Id === card2Id) {
-      handleMatch();
+      handleMatch(state);
     } else {
-      handleMismatch();
+      handleMismatch(state);
     }
   }
 }
 //Match Handle
-function handleMatch() {
+function handleMatch(state) {
   // Add matched class to both cards
-  flippedCards[0].classList.add("matched");
-  flippedCards[1].classList.add("matched");
+  state.flippedCards[0].classList.add("matched");
+  state.flippedCards[1].classList.add("matched");
 
   // Increase match paired counter
-  matchedPairs++;
+  state.matchedPairs++;
 
   // Empty flippedCards
-  flippedCards = [];
+  state.flippedCards = [];
 
-  //Unlook the board
-  canClick = true;
+  //Unlock the board
+  state.canClick = true;
 
   //check win condition
-  checkWinCondition();
+  checkWinCondition(state);
 }
 
 // handle mis match condition
-function handleMismatch() {
+function handleMismatch(state) {
   setTimeout(() => {
     // remove class flipped from cards.
-    flippedCards[0].classList.remove("flipped");
-    flippedCards[1].classList.remove("flipped");
+    state.flippedCards[0].classList.remove("flipped");
+    state.flippedCards[1].classList.remove("flipped");
     // empty flipped card array
-    flippedCards = [];
+    state.flippedCards = [];
 
     //unlook the board
-    canClick = true;
+    state.canClick = true;
   }, 1500);
 }
 //check win condition
-function checkWinCondition() {
-  if (matchedPairs === TOTAL_PAIRS) {
+function checkWinCondition(state) {
+  if (state.matchedPairs === TOTAL_PAIRS) {
     // Player won!
-    stopTimer();
+    stopTimer(state);
     // delay for the last card seen by player
     setTimeout(function () {
-      showWinMessage();
+      showWinMessage(state);
     }, 500);
   }
 }
 
 // Show Win Message
-function showWinMessage() {
+function showWinMessage(state) {
   // show a message for test
-  alert("You Win \nTime: " + formatTime(timer) + "\nReveals: " + counter);
+  alert("You Win \nTime: " + formatTime(state.timer) + "\nReveals: " + state.counter);
 }
 
-// Remove before final presentation
-//
-//Card data - 8 unique cards
-// const cardData = [
-//   { id: 1, name: "bog", image: "assets/bog.png" },
-//   { id: 2, name: "bil", image: "assets/bil.png" },
-//   { id: 3, name: "cykel", image: "assets/cykel.png" },
-//   { id: 4, name: "skole", image: "assets/skole.png" },
-//   { id: 5, name: "sol", image: "assets/sol.png" },
-//   { id: 6, name: "stol", image: "assets/stol.png" },
-//   { id: 7, name: "bold", image: "assets/bold.png" },
-//   { id: 8, name: "træ", image: "assets/træ.png" },
-// ];
 
-let cardData = []; // Will be populated from API
+
 
 // Fetch card data from API
-function fetchCardData(limit = 8) {
+function fetchCardData(limit = 8,state) {
   return fetch(`http://localhost:3000/cards/all-cards/${limit}`)
     .then((response) => {
       if (!response.ok) throw new Error("Network response was not ok");
@@ -127,11 +118,12 @@ function fetchCardData(limit = 8) {
         return [];
       }
       // Map API data to game format
-      return data.map((card) => ({
+      state.cardData=data.map((card) => ({
         id: card.id,
         name: card.card_name,
         image: card.image_path,
       }));
+      createCards(state);
     })
     .catch((error) => {
       console.error("Error fetching cards:", error);
@@ -157,18 +149,18 @@ function shuffleCards(cards) {
 }
 
 // Generate all cards and add to grid
-function createCards() {
+function createCards(state) {
   const gridContainer = document.getElementById("card-grid");
   gridContainer.innerHTML = ""; // Clear any existing cards
 
   // Fetch the card data (returns a Promise)
-  fetchCardData(8).then((cardData) => {
-    if (!cardData.length) return; // already alerted in fetchCardData
+  //fetchCardData(8).then((cardData) => {
+   // if (!cardData.length) return; // already alerted in fetchCardData
 
     // Initialize game cards
-    gameCards = shuffleCards(duplicateCards(cardData));
+    state.gameCards = shuffleCards(duplicateCards(state.cardData));
 
-    gameCards.forEach((card, index) => {
+    state.gameCards.forEach((card, index) => {
       // Create card HTML
       const cardDiv = document.createElement("div");
       cardDiv.className = "flip-card";
@@ -176,7 +168,7 @@ function createCards() {
       cardDiv.setAttribute("data-card-id", card.id);
 
       cardDiv.addEventListener("click", () => {
-        flipCard(cardDiv);
+        flipCard(cardDiv,state);
       });
 
       cardDiv.innerHTML = `
@@ -195,35 +187,35 @@ function createCards() {
 
       gridContainer.appendChild(cardDiv);
     });
-  });
+ // });
 }
 
-document.addEventListener("DOMContentLoaded", createCards);
+
 
 //*************************************** End of Grid  */
 
 // Timer Functions
 
-function startTimer() {
-  if (timerInterval) return; // Prevent multiple intervals
-  startTime = Date.now() - timer * 1000; // Resume correctly if paused
-  timerInterval = setInterval(() => {
-    timer = Math.floor((Date.now() - startTime) / 1000);
-    timerEl.textContent = formatTime(timer);
+function startTimer(state) {
+  if (state.timerInterval) return; // Prevent multiple intervals
+  state.startTime = Date.now() - state.timer * 1000; // Resume correctly if paused
+  state.timerInterval = setInterval(() => {
+    state.timer = Math.floor((Date.now() - state.startTime) / 1000);
+    timerEl.textContent = formatTime(state.timer);
   }, 1000);
 }
 
-function stopTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
+function stopTimer(state) {
+  clearInterval(state.timerInterval);
+  state.timerInterval = null;
 }
 
-function resetTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-  timer = 0;
-  startTime = null;
-  timerEl.textContent = formatTime(timer);
+function resetTimer(state) {
+  clearInterval(state.timerInterval);
+  state.timerInterval = null;
+  state.timer = 0;
+  state.startTime = null;
+  timerEl.textContent = formatTime(state.statetimer);
 }
 
 function formatTime(seconds) {
@@ -232,22 +224,31 @@ function formatTime(seconds) {
   return `${min}:${sec}`;
 }
 
-//restart game function
 
-const restartButton = document.getElementById("restartButton");
+function restartGame(state){
+  // Hide Win Message
 
-restartButton.addEventListener("click", () => {
-  // Reset game state
-  counter = 0;
-  flippedCards = [];
-  canClick = true;
+  // restart Timer
+  resetTimer(state);
+  
+  // Reset All the game state
+  state.matchedPairs=0;
+  state.counter = 0;
+  state.flippedCards = [];
+  state.canClick = true;
 
-  updateCounter();
-  resetTimer();
+  //update display
+  updateCounter(state);
 
-  // Reshuffle cards
-  gameCards = shuffleCards(duplicateCards(cardData));
+  // remove all class ("matched")
+
 
   // Recreate grid
-  createCards();
+  createCards(state);
+
+}
+
+//Start game when page loads
+document.addEventListener("DOMContentLoaded", () => {
+  fetchCardData(TOTAL_PAIRS,gameState);
 });
