@@ -12,7 +12,7 @@ body {
   flex-direction: column;
   align-items: center;
    min-height: 100vh;
-  background-image: url("assets/background.jpg");
+  background-image: url("assets/background2.jpg");
   background-size: cover;
   background-position: center;
   overflow-x: hidden; 
@@ -30,7 +30,7 @@ main {
 .header {
   padding: 2rem 0;
   text-align: center;
-  font-size: 4rem;
+  font-size: 2rem;
   font-family: "Luckiest Guy", cursive;
   color: #fff;
   
@@ -44,7 +44,7 @@ main {
 .stats {
   display: flex;
   gap: 2rem;
-  margin: 3rem 0;
+ margin: 1rem 0 2rem 0; /* top margin smaller, bottom margin for spacing from grid */
   font-size: 1.3rem;
   font-family: "Luckiest Guy", cursive;
 }
@@ -112,7 +112,7 @@ main {
 }
 .footer {
   margin-top: 10rem;
-  font-size: 2rem;
+  font-size: 1rem;
   color: #666;
    width: 100%;
      text-align: center;
@@ -123,32 +123,56 @@ main {
 /* grid css */
 
 
-
 /* ============================= */
-/* GAME BOARD GRID */
+/* GAME BOARD GRID RESPONSIVE */
 /* ============================= */
 
 .game-board {
   display: grid;
-  grid-template-columns: repeat(4, 150px);
-  grid-template-rows: repeat(4, 150px);
-  gap: 2rem;
-  justify-content: center;
-  margin-top: 2rem;
+ grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr; /* all rows equal height */
+  gap: 1rem;
+
+  width: 70vw; 
+  max-width: 900px; /* optional max size */
+  min-width: 350px; /* optional min size */
+
+background-color: rgba(0, 0, 0, 0.35); /* semi-transparent background */
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  margin: 2rem auto; /* center the grid */
 }
 
-/* Remove big margins from cards */
-.flip-card {
-  margin: 0;
+/* Make flip-cards stretch to fill the grid cell */
+.game-board .flip-card {
+  width: 100%;
+  height: auto; /* maintain aspect ratio via padding trick */
+  aspect-ratio: 1/1; /* modern way to keep square cards */
+  margin: 0; /* remove extra margins */
+  transition: transform 0.3s ease; /* smooth scaling effect */
 }
+
+/* Smaller screens adjustments */
 @media (max-width: 768px) {
   .game-board {
-    grid-template-columns: repeat(3, 120px);
-    grid-template-rows: auto;
+    width: 90vw;
+    gap: 0.8rem;
+    padding: 1rem;
   }
 
-  .flip-card {
-    width: 120px;
-    height: 120px;
+  .game-board .flip-card {
+    aspect-ratio: 1 / 1;
   }
 }
+
+/* Extra small screens */
+@media (max-width: 500px) {
+  .game-board {
+    width: 95vw;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+
+
