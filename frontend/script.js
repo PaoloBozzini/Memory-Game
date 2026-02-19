@@ -188,6 +188,12 @@ function showWinMessage() {
    // Stop timer 
  stopTimer();
 
+  // 🎉 CONFETTI BURST
+  confetti({
+    particleCount: 150,
+    spread: 120,
+    origin: { y: 0.6 }
+  });
 
   // Set final values
   finalScore.textContent = document.getElementById("timer").textContent;
@@ -197,12 +203,7 @@ function showWinMessage() {
   winMessage.classList.remove("hidden");
 }
 
-// 🎉 CONFETTI BURST
-  confetti({
-    particleCount: 150,
-    spread: 120,
-    origin: { y: 0.6 }
-  });
+
 
 
 function hideWinMessage() {
