@@ -2,6 +2,12 @@
 const revealsEl = document.getElementById("reveals");
 const timerEl = document.getElementById("timer");
 const flipSound = new Audio("assets/flip.mp3");
+const winMessage = document.getElementById("win-message");
+const finalScore = document.getElementById("finalScore");
+const finalReveals = document.getElementById("finalReveals");
+const playAgainBtn = document.getElementById("play-again-btn");
+const winButton = document.getElementById("win-btn");
+
 const TOTAL_PAIRS = 8;
 
 // Game state
@@ -95,11 +101,6 @@ function checkWinCondition(state) {
   }
 }
 
-// Show Win Message
-function showWinMessage(state) {
-  // show a message for test
-  alert("You Win \nTime: " + formatTime(state.timer) + "\nReveals: " + state.counter);
-}
 
 
 
@@ -153,10 +154,7 @@ function createCards(state) {
   const gridContainer = document.getElementById("card-grid");
   gridContainer.innerHTML = ""; // Clear any existing cards
 
-  // Fetch the card data (returns a Promise)
-  //fetchCardData(8).then((cardData) => {
-   // if (!cardData.length) return; // already alerted in fetchCardData
-
+  
     // Initialize game cards
     state.gameCards = shuffleCards(duplicateCards(state.cardData));
 
@@ -172,16 +170,13 @@ function createCards(state) {
       });
 
       cardDiv.innerHTML = `
-    <div class="flip-card">
-    <div class="flip-card-inner">
+        <div class="flip-card-inner">
       <div class="flip-card-back">
           <img src="assets/back-card.png" alt="card back" />
       </div>
       <div class="flip-card-front">
           <img src="${card.image}" alt="${card.name}" />
       </div>
-
-    </div>
     </div>
     `;
 
@@ -192,7 +187,41 @@ function createCards(state) {
 
 
 
-//*************************************** End of Grid  */
+
+document.addEventListener("DOMContentLoaded", createCards);
+
+//********************************************* Win message ***********************/
+
+// Show Win Message
+function showWinMessage(state) {
+   // Stop timer 
+  stopTimer(state);
+  
+  // 🎉 CONFETTI BURST
+  const confettiCanvas = document.querySelector("canvas"); // the one created by confetti
+if (confettiCanvas) {
+  confettiCanvas.style.zIndex = "9999";      // bring to front
+  confettiCanvas.style.pointerEvents = "none"; // clicks pass through
+}
+  confetti({
+    particleCount: 150,
+    spread: 120,
+    origin: { y: 0.6 }
+    
+  });
+
+  finalScore.textContent = timerEl.textContent;
+  finalReveals.textContent = revealsEl.textContent;
+  winMessage.classList.remove("hidden");
+}
+
+function hideWinMessage(state) {
+  winMessage.classList.add("hidden");
+}
+
+
+
+//********************************************* Timer Functions ***********************/
 
 // Timer Functions
 
@@ -215,7 +244,7 @@ function resetTimer(state) {
   state.timerInterval = null;
   state.timer = 0;
   state.startTime = null;
-  timerEl.textContent = formatTime(state.statetimer);
+  timerEl.textContent = formatTime(state.timer);
 }
 
 function formatTime(seconds) {
@@ -225,30 +254,35 @@ function formatTime(seconds) {
 }
 
 
-function restartGame(state){
-  // Hide Win Message
-
-  // restart Timer
-  resetTimer(state);
-  
-  // Reset All the game state
-  state.matchedPairs=0;
+  // Reset game state
+function restartGame(state) {
+  hideWinMessage(state);
+    resetTimer(state);
+  state.matchedPairs = 0;
   state.counter = 0;
   state.flippedCards = [];
   state.canClick = true;
 
-  //update display
-  updateCounter(state);
 
   // remove all class ("matched")
+  document.querySelectorAll(".flip-card").forEach(card => card.classList.remove("matched", "flipped"));
 
+   updateCounter(state);
+  createCards(state);
 
   // Recreate grid
   createCards(state);
 
 }
 
-//Start game when page loads
-document.addEventListener("DOMContentLoaded", () => {
-  fetchCardData(TOTAL_PAIRS,gameState);
-});
+
+//win-btn for debugging 
+
+winButton.addEventListener("click", showWinMessage);
+playAgainBtn.addEventListener("click", () => restartGame(gameState));
+document.getElementById("restartButton").addEventListener("click", () => restartGame(gameState));
+winButton.addEventListener("click", () => showWinMessage(gameState));
+
+
+ 
+
