@@ -30,7 +30,7 @@ main {
 .header {
   padding: 2rem 0;
   text-align: center;
-  font-size: 2rem;
+  font-size: 4rem;
   font-family: "Luckiest Guy", cursive;
   color: #fff;
   
@@ -82,7 +82,6 @@ main {
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
 }
 
-
 .flip-card-front,
 .flip-card-back {
   position: absolute;
@@ -113,14 +112,13 @@ main {
 }
 .footer {
   margin-top: 10rem;
-  font-size: 1rem;
+  font-size: 2rem;
   color: #666;
    width: 100%;
      text-align: center;
        padding: 1rem 0;
         
 }
-
 
 /* grid css */
 

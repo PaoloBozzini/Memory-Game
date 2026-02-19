@@ -1,6 +1,12 @@
-//********************************************* Java Script for Grid ***********************/
+
+//********************************************* Variables ***********************/
 const revealsEl = document.getElementById("reveals");
 const timerEl = document.getElementById("timer");
+const winMessage = document.getElementById("win-message");
+const finalScore = document.getElementById("finalScore");
+const finalReveals = document.getElementById("finalReveals");
+const playAgainBtn = document.getElementById("play-again-btn");
+const restartButton = document.getElementById("restartButton");
 const flipSound = new Audio("assets/flip.mp3");
 const winMessage = document.getElementById("win-message");
 const finalScore = document.getElementById("finalScore");
@@ -247,11 +253,18 @@ function resetTimer(state) {
   timerEl.textContent = formatTime(state.timer);
 }
 
+//Format time in mm:ss
 function formatTime(seconds) {
   const min = String(Math.floor(seconds / 60)).padStart(2, "0");
   const sec = String(seconds % 60).padStart(2, "0");
   return `${min}:${sec}`;
 }
+// Update revealsCounter
+function updateCounter() {
+  document.getElementById("reveals").textContent = counter;
+}
+//********************************************* Restart Game Functions ***********************/
+//Restart game function
 
 
   // Reset game state
