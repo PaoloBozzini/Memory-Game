@@ -1,35 +1,60 @@
-.restart-button {
+/* Base button style: applies to all buttons */
+button, .restart-button, #play-again-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   padding: 14px 28px;
   font-size: 1.5rem;
   font-weight: 700;
   font-family: "Luckiest Guy", cursive;
-  color: #fff;
-
-  background: linear-gradient(180deg, #8fd400, #5fa800);
+  color: #000; /* Keep text color black for contrast */
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  box-shadow: 0 4px 0 #e7b652;
-  margin-top: 10rem;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.2); /* subtle shadow for depth */
+  transition: all 0.2s ease-in-out;
 }
 
-/* Hover */
-.restart-button:hover {
-  transform: translateY(-2px);
+/* Preserve original button colors */
+#play-again-button {
+  background-color: #4CAF50; /* original color */
 }
 
+.restart-button {
+  background: linear-gradient(180deg, #8fd400, #5fa800); /* original gradient */
+}
+
+/* Hover effect: lift and slight scale */
+button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.25);
+}
 
 /* Active (pressed) */
-.restart-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #e7b652;
+button:active {
+  transform: translateY(3px) scale(0.98);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2);
 }
 
-/* Focus */
-.restart-button:focus-visible {
+/* Focus outline for accessibility */
+button:focus-visible {
   outline: 3px solid #00abe1;
   outline-offset: 4px;
+}
+
+/* Optional pop-in animation for newly displayed buttons */
+@keyframes popIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+button.pop-in {
+  animation: popIn 0.3s ease forwards;
 }
