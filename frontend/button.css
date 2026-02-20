@@ -1,28 +1,30 @@
-/* Base button style: applies to all buttons */
-button, .restart-button, #play-again-button {
+button {
   display: inline-flex;
-  align-items: center;
+  align-items:center;
   justify-content: center;
-  gap: 12px;
-  padding: 14px 28px;
-  font-size: 1.5rem;
-  font-weight: 700;
-  font-family: "Luckiest Guy", cursive;
+  gap: 6px;
+ padding:1em 2em
+  font-size: clamp(1rem, 1.5vw, 1rem);
+  font-weight: 800;
+  font-family: "Lucida Grande", cursive;
   color: #000; /* Keep text color black for contrast */
   border: none;
-  border-radius: 20px;
+  border-radius: 9999px;
   cursor: pointer;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.2); /* subtle shadow for depth */
+  box-shadow: 0 4px 0 rgba(0,0,0,0.5); /* subtle shadow for depth */
   transition: all 0.2s ease-in-out;
+  margin-top: 4rem;
 }
 
 /* Preserve original button colors */
 #play-again-button {
-  background-color: #4CAF50; /* original color */
+  background-color:white /* original color */
 }
 
 .restart-button {
   background: linear-gradient(180deg, #8fd400, #5fa800); /* original gradient */
+  width: auto;         /* let width adjust to text */
+  min-width: 80px; 
 }
 
 /* Hover effect: lift and slight scale */
@@ -58,3 +60,5 @@ button:focus-visible {
 button.pop-in {
   animation: popIn 0.3s ease forwards;
 }
+
+

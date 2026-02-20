@@ -1,178 +1,51 @@
 * {
   box-sizing: border-box;
 }
-html, body {
-  height: 100%;
+html,
+body {
+height: 100%;
+  width: 100%;
   margin: 0;
+  padding: 0;
+   box-sizing: border-box;
 }
 
-body {
-  font-family: "Luckiest Guy", cursive;
-   display: flex;
-  flex-direction: column;
-  align-items: center;
-   min-height: 100vh;
-  background-image: url("assets/background2.jpg");
-  background-size: cover;
-  background-position: center;
-  overflow-x: hidden; 
-  overflow-y: auto;
+
+
+.header {
+   text-align: center;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  font-family: "Lucida Grande", cursive;
+  color: #fff;
+  padding: 1rem;
+  width: 100%;
 }
+
+
 /* Make main content grow to push footer down */
 main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  
+  min-height: 100vh;
   width: 100%;
-  padding: 2rem 0;
-}
-.header {
-  padding: 2rem 0;
-  text-align: center;
-  font-size: 2rem;
-  font-family: "Luckiest Guy", cursive;
-  color: #fff;
+  background: url('assets/background.png') no-repeat center center/cover;
+  background-size: cover;
   
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-   width: 100%;
-}
+  flex-direction: column;
+  align-items: center; /* center horizontally */
+  justify-content: flex-start; /* header at top */
+  padding: 1rem;
+  }
 
-.stats {
-  display: flex;
-  gap: 2rem;
- margin: 1rem 0 2rem 0; /* top margin smaller, bottom margin for spacing from grid */
-  font-size: 1.3rem;
-  font-family: "Luckiest Guy", cursive;
-}
-
-.stat-box {
-  background-color: #3399ff;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  min-width: 100px;
-  text-align: center;
-  box-shadow: 0 3px 0 #0077cc;
-}
-
-.flip-card {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  perspective: 1000px;
-  cursor: pointer;
-  margin: 3rem;
-}
-
-.flip-card-inner {
-  position: relative;
+main > * {
   width: 100%;
-  height: 100%;
-  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform-style: preserve-3d;
-}
-
-.flip-card.flipped .flip-card-inner {
-  transform: rotateY(180deg);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
-}
-
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-}
-
-.flip-card-back img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.flip-card-front img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.flip-card-front {
-  transform: rotateY(180deg);
+  max-width: 600px; /* keeps grid and stats from stretching too wide */
+  margin: 0 auto;
 }
 .footer {
-  margin-top: 10rem;
-  font-size: 1rem;
-  color: #666;
-   width: 100%;
-     text-align: center;
-       padding: 1rem 0;
-        
+
+  font-size: 0.9rem;
+  color: black;
+   text-align: center;
+  margin-top: auto; /* push footer to bottom */
 }
-
-/* grid css */
-
-
-/* ============================= */
-/* GAME BOARD GRID RESPONSIVE */
-/* ============================= */
-
-.game-board {
-  display: grid;
- grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 1fr; /* all rows equal height */
-  gap: 1rem;
-
-  width: 70vw; 
-  max-width: 900px; /* optional max size */
-  min-width: 350px; /* optional min size */
-
-background-color: rgba(0, 0, 0, 0.35); /* semi-transparent background */
-  padding: 1.5rem;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  margin: 2rem auto; /* center the grid */
-}
-
-/* Make flip-cards stretch to fill the grid cell */
-.game-board .flip-card {
-  width: 100%;
-  height: auto; /* maintain aspect ratio via padding trick */
-  aspect-ratio: 1/1; /* modern way to keep square cards */
-  margin: 0; /* remove extra margins */
-  transition: transform 0.3s ease; /* smooth scaling effect */
-}
-
-/* Smaller screens adjustments */
-@media (max-width: 768px) {
-  .game-board {
-    width: 90vw;
-    gap: 0.8rem;
-    padding: 1rem;
-  }
-
-  .game-board .flip-card {
-    aspect-ratio: 1 / 1;
-  }
-}
-
-/* Extra small screens */
-@media (max-width: 500px) {
-  .game-board {
-    width: 95vw;
-    gap: 0.5rem;
-    padding: 0.5rem;
-  }
-}
-
-
