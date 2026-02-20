@@ -38,6 +38,10 @@ function flipCard(cardElement,state) {
     startTimer(state);
   }
 
+// Play flip sound
+  flipSound.currentTime = 0; // 
+  flipSound.play();
+
   cardElement.classList.add("flipped");
   state.flippedCards.push(cardElement);
   state.counter++;
@@ -50,13 +54,19 @@ function flipCard(cardElement,state) {
     const card1Id = state.flippedCards[0].getAttribute("data-card-id");
     const card2Id = state.flippedCards[1].getAttribute("data-card-id");
 
-    if (card1Id === card2Id) {
-      handleMatch(state);
-    } else {
-      handleMismatch(state);
-    }
+
+
+    // wait 1.5s so player sees both cards
+    setTimeout(() => {
+      if (card1Id === card2Id) {
+        handleMatch(state);
+      } else {
+        handleMismatch(state);
+      }
+    }, 300);
   }
 }
+
 //Match Handle
 function handleMatch(state) {
   // Add matched class to both cards
@@ -87,7 +97,7 @@ function handleMismatch(state) {
 
     //unlook the board
     state.canClick = true;
-  }, 1500);
+  }, 300);
 }
 //check win condition
 function checkWinCondition(state) {
@@ -97,7 +107,7 @@ function checkWinCondition(state) {
     // delay for the last card seen by player
     setTimeout(function () {
       showWinMessage(state);
-    }, 500);
+    }, 300);
   }
 }
 
@@ -258,18 +268,16 @@ function formatTime(seconds) {
   // Reset game state
 function restartGame(state) {
   hideWinMessage(state);
-    resetTimer(state);
+
+  resetTimer(state);
+  
   state.matchedPairs = 0;
   state.counter = 0;
   state.flippedCards = [];
   state.canClick = true;
 
-
-  // remove all class ("matched")
-  document.querySelectorAll(".flip-card").forEach(card => card.classList.remove("matched", "flipped"));
-
-   updateCounter(state);
-  createCards(state);
+  updateCounter(state);
+ 
 
   // Recreate grid
   createCards(state);
@@ -279,11 +287,6 @@ function restartGame(state) {
 
 //win-btn for debugging 
 
-winButton.addEventListener("click", showWinMessage);
+
 playAgainBtn.addEventListener("click", () => restartGame(gameState));
 document.getElementById("restartButton").addEventListener("click", () => restartGame(gameState));
-winButton.addEventListener("click", () => showWinMessage(gameState));
-
-
- 
-
