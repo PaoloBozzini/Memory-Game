@@ -114,30 +114,40 @@ function checkWinCondition(state) {
 
 
 // Fetch card data from API
-function fetchCardData(limit = 8,state) {
-  return fetch(`http://localhost:3000/cards/all-cards/${limit}`)
-    .then((response) => {
-      if (!response.ok) throw new Error("Network response was not ok");
-      return response.json(); // parse JSON
-    })
-    .then((data) => {
+async function fetchCardData(limit = TOTAL_PAIRS, state) {
+  const messageEl = document.getElementById("message");
 
-      if (!data.length) {
-        alert("Failed to load cards");
-        return [];
-      }
-      // Map API data to game format
-      state.cardData=data.map((card) => ({
-        id: card.id,
-        name: card.card_name,
-        image: card.image_path,
-      }));
-      createCards(state);
-    })
-    .catch((error) => {
-      console.error("Error fetching cards:", error);
+  try {
+    
+    const response = await fetch(
+      `http://localhost:3000/cards/all-cards/${limit}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error: Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      console.warn("No cards received from API");
       return [];
-    });
+    }
+
+    state.cardData = data.map((card) => ({
+      id: card.id,
+      name: card.card_name,
+      image: card.image_path,
+    }));
+
+    createCards(state);
+
+    return state.cardData; // always return array
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+    messageEl.textContent = "Failed to load cards. Please try again later.";
+    return [];
+  }
 }
 
 // Duplicate cards so each appears twice
