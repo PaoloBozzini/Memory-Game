@@ -2,28 +2,26 @@ button {
   display: inline-flex;
   align-items:center;
   justify-content: center;
-  gap: 6px;
-  padding:1em 2em;
-  font-size: clamp(1rem, 1.5vw, 1rem);
-  font-weight: 800;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  gap: 0.5rem;
   font-family: "Lucida Grande", cursive;
-  color: #000; /* Keep text color black for contrast */
+  color: #000; 
   border: none;
   border-radius: 9999px;
-  cursor: pointer;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.5); /* subtle shadow for depth */
+  box-shadow:  0 4px 0 rgba(0, 0, 0, 0.4);
+ cursor: pointer;
   transition: all 0.2s ease-in-out;
-  margin-top: 4rem;
+  
 }
 
 /* Preserve original button colors */
 #play-again-button {
-  background-color:white /* original color */
+  background-color:white 
 }
 
 .restart-button {
-  background: linear-gradient(180deg, #8fd400, #5fa800); /* original gradient */
-  width: auto;         /* let width adjust to text */
+  background: linear-gradient(180deg, #aadf40, #559403); 
+  width: auto;         
   min-width: 80px; 
 }
 
@@ -41,11 +39,11 @@ button:active {
 
 /* Focus outline for accessibility */
 button:focus-visible {
-  outline: 3px solid #00abe1;
+  outline: 3px solid beige;
   outline-offset: 4px;
 }
 
-/* Optional pop-in animation for newly displayed buttons */
+/* animation for newly displayed buttons */
 @keyframes popIn {
   from {
     transform: scale(0.7);
