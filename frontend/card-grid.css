@@ -1,3 +1,21 @@
+.game-board {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+
+  gap: 0.8rem;
+   width: min(90vw, 90vh);
+
+  height: 500px;
+  padding: 1rem;
+  aspect-ratio: 1 / 1;
+}
+
+.game-board .flip-card {
+  width: 80%;
+  aspect-ratio: 1 / 1;
+  transition: transform 0.3s ease;
+}
+
 .flip-card {
   position: relative;
   cursor: pointer;
@@ -62,20 +80,6 @@
   pointer-events: none;
 }
 
-.game-board {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 1rem;
-  width: 100%;
-  max-width: 800px;
-  padding: 1rem;
-}
-
-.game-board .flip-card {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  transition: transform 0.3s ease;
-}
 
 /* Smaller screens adjustments */
 @media (max-width: 768px) {
@@ -84,12 +88,14 @@
     gap: 0.8rem;
     padding: 1rem;
   }
+  
 }
 
 /* Extra small screens */
 @media (max-width: 500px) {
   .game-board {
     width: 95vw;
+    height: auto;
     gap: 0.5rem;
     padding: 0.5rem;
   }
