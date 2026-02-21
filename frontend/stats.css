@@ -2,24 +2,25 @@
   display: flex;
   gap: 1.5rem;
   justify-content: center;
-  font-family: "Lucida Grande", cursive;
-  margin-top: 0.4rem;
-  flex-wrap: wrap; /* wrap on smaller screens */
-  margin-bottom: 4rem;
+  font-family: "Lucida Grande", oblique, cursive;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  flex-wrap: wrap; 
+  margin-bottom: 1rem;
 }
 
 .stat-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-
-  background: linear-gradient(180deg, #4dabf7, #1c7ed6);
+  width:fit-content;
+  padding-left: 0.5em;
+  padding-top: 0.1em;
+  padding-top: 0.1em;
+  padding-right: 0.5em;
+  background: linear-gradient(180deg, #53aaf2, #1c7ed6);
   color: #fff;
-
-  padding: 0.2em 0.9em;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  
   border-radius: 9999px;
-
-  font-weight: 700;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
 }

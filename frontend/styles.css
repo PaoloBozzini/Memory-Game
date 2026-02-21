@@ -3,49 +3,43 @@
 }
 html,
 body {
-height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
    box-sizing: border-box;
+   scroll-snap-align: none;
+    background: url('assets/background.png') no-repeat center center/cover ;
+    background-size: cover;
+  
 }
-
 
 
 .header {
-   text-align: center;
-  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  text-align: center;
+  font-size: clamp(1rem, 3vw, 1.4rem);
   font-family: "Lucida Grande", cursive;
   color: #fff;
-  padding: 1rem;
-  width: 100%;
-}
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  letter-spacing:7px;
+  }
+ 
 
-
-/* Make main content grow to push footer down */
 main {
   
-  min-height: 100vh;
+  min-height: 95vh;
   width: 100%;
-  background: url('assets/background.png') no-repeat center center/cover;
-  background-size: cover;
-  
+ 
   display: flex;
   flex-direction: column;
-  align-items: center; /* center horizontally */
-  justify-content: flex-start; /* header at top */
-  padding: 1rem;
+  align-items: center; 
+  justify-content: flex-start; 
+ 
   }
 
 main > * {
   width: 100%;
-  max-width: 600px; /* keeps grid and stats from stretching too wide */
-  margin: 0 auto;
+  max-width: 600px; 
+ 
 }
-.footer {
 
-  font-size: 0.9rem;
-  color: black;
-   text-align: center;
-  margin-top: auto; /* push footer to bottom */
-}
+
