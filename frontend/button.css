@@ -3,7 +3,7 @@ button {
   align-items:center;
   justify-content: center;
   gap: 6px;
- padding:1em 2em
+  padding:1em 2em;
   font-size: clamp(1rem, 1.5vw, 1rem);
   font-weight: 800;
   font-family: "Lucida Grande", cursive;
