@@ -14,9 +14,13 @@ button {
   
 }
 
+/*  🔴 [blocking] Ids selectors should be used rarely, if you have different button types, use class selectors instead. 
+    For example, you can give both buttons a common class "game-button" for shared styles, 
+    and then specific classes like "play-again-button" and "restart-button" for their unique styles.
+. */
 /* Preserve original button colors */
 #play-again-button {
-  background-color:white 
+  background-color:white
 }
 
 .restart-button {
@@ -37,12 +41,17 @@ button:active {
   box-shadow: 0 2px 0 rgba(0,0,0,0.2);
 }
 
+/*  🎉  Nice UX attention! */
 /* Focus outline for accessibility */
 button:focus-visible {
   outline: 3px solid beige;
   outline-offset: 4px;
 }
-
+/*
+ 🟡 [important] consider creating a keyframes.css file 
+  for animations if you have more than a few. 
+  This keeps your CSS organized and makes it easier to find and manage animations as your project grows.
+*/
 /* animation for newly displayed buttons */
 @keyframes popIn {
   from {

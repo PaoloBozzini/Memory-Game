@@ -1,10 +1,13 @@
+/*  📚  A more concise way: grid-template-columns: repeat(4, 1fr) — gives equal-width columns. */
 .game-board {
   display: grid;
   grid-template-columns: auto auto auto auto;
 
   gap: 0.8rem;
    width: min(90vw, 90vh);
-
+  /*  🟡 [important] width + height + aspect-ratio conflict. aspect-ratio is ignored when both
+     width and height are explicit. Pick one approach: width + aspect-ratio (remove height) or
+     width + height (remove aspect-ratio). */
   height: 500px;
   padding: 1rem;
   aspect-ratio: 1 / 1;
@@ -46,6 +49,8 @@
   border-radius: 15px;
 }
 
+/*  🟡 [important] These two rules are identical. Combine them:
+   .flip-card-front img, .flip-card-back img { ... } */
 .flip-card-front img
 {
   width: 100%;
@@ -101,6 +106,12 @@
   }
 }
 
+/*
+ 🟡 [important] consider creating a keyframes.css file 
+  for animations if you have more than a few. 
+  This keeps your CSS organized and makes it easier to find and manage animations as your project grows.
+*/
+
 @keyframes fadeOut {
   0% {
     opacity: 1;
@@ -112,6 +123,7 @@
   }
 }
 
+/*  🔴 [blocking] duplicate */
 .flip-card.matched {
   animation: fadeOut 0.6s ease forwards;
   pointer-events: none;

@@ -9,14 +9,18 @@ body {
    box-sizing: border-box;
    scroll-snap-align: none;
     background: url('assets/background.png') no-repeat center center/cover ;
+    /*  🟡 [important] background-size: cover is already set in the shorthand above */
     background-size: cover;
-  
+
 }
 
+   /*  🔴 [blocking] this rule should be inside it's layout.css file, 
+    not in a generic styles.css. styles.css should only have very global rules that apply to the whole site, like the above universal selector and body background. */
 
 .header {
   text-align: center;
   font-size: clamp(1rem, 3vw, 1.4rem);
+  /*  📚 I checked, "cursive" generic font renders very differently per OS (Comic Sans on Windows, Snell Roundhand on Mac) */
   font-family: "Lucida Grande", cursive;
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -42,4 +46,13 @@ main > * {
  
 }
 
+ /*  🟡 [important]you're missing typography rules for consistency and readability
+      Consider adding a global font-family, line-height, and color in styles.css to ensure all text across the site is consistent and legible. 
+      For example:
+      body {
+        font-family: "Lucida Grande", cursive;
+        line-height: 1.5;
+        color: #333;
+      }
+*/
 

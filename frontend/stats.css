@@ -13,6 +13,7 @@
   align-items: center;
   justify-content: center;
   width:fit-content;
+  /*  🟡 [important] Consider using shorthand: padding: 0.1em 0.5em; */
   padding-left: 0.5em;
   padding-top: 0.1em;
   padding-top: 0.1em;

@@ -70,6 +70,9 @@
   font-weight: 400;
 }
 
+/*  🟡 [important] popIn @keyframes is also defined in button.css. Having the same name in
+   two files can cause conflicts depending on load order. Define it once in styles.css and
+   reference it from both places. */
 /* Animation */
 @keyframes popIn {
   from {

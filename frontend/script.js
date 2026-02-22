@@ -10,6 +10,8 @@ const winButton = document.getElementById("win-btn");
 
 const TOTAL_PAIRS = 8;
 
+//  🎉  As said, excellent use of a centralized state object! This avoids scattered globals,
+// makes the code testable, and is the foundation of state management in frameworks like React.
 // Game state
 const gameState={
 timer : 0,// Timer in seconds
@@ -26,6 +28,7 @@ cardData : [], // Will be populated from API
 
 // Update displays
 function updateCounter(state) {
+  //  🟡 [important] You already cached this element as `revealsEl` at the top of the file.
   document.getElementById("reveals").textContent = state.counter;
 }
 
@@ -39,8 +42,8 @@ function flipCard(cardElement,state) {
   }
 
 // Play flip sound
-  flipSound.currentTime = 0; // 
-  flipSound.play();
+  flipSound.currentTime = 0;
+  flipSound.play(); //  🟡 [important] .play() returns a Promise that can reject (browser autoplay policy). Wrap: flipSound.play().catch(() => {});
 
   cardElement.classList.add("flipped");
   state.flippedCards.push(cardElement);
@@ -56,6 +59,7 @@ function flipCard(cardElement,state) {
 
 
 
+    //  🔴 [blocking] Comment says "wait 1.5s" but setTimeout below uses 300ms, update to match the actual value.
     // wait 1.5s so player sees both cards
     setTimeout(() => {
       if (card1Id === card2Id) {
@@ -70,6 +74,9 @@ function flipCard(cardElement,state) {
 //Match Handle
 function handleMatch(state) {
   // Add matched class to both cards
+
+  //  🟡 [important] Be careful when you want to access 
+  // elements in arrays, always check if they exist first to avoid runtime errors.
   state.flippedCards[0].classList.add("matched");
   state.flippedCards[1].classList.add("matched");
 
@@ -89,6 +96,8 @@ function handleMatch(state) {
 // handle mis match condition
 function handleMismatch(state) {
   setTimeout(() => {
+     //  🟡 [important] Be careful when you want to access 
+  // elements in arrays, always check if they exist first to avoid runtime errors.
     // remove class flipped from cards.
     state.flippedCards[0].classList.remove("flipped");
     state.flippedCards[1].classList.remove("flipped");
@@ -113,6 +122,8 @@ function checkWinCondition(state) {
 
 
 
+//  🟡 [important] Parameter order: default param (limit) before required param (state) is
+// unusual. Convention: required first → fetchCardData(state, limit = TOTAL_PAIRS)
 // Fetch card data from API
 async function fetchCardData(limit = TOTAL_PAIRS, state) {
   const messageEl = document.getElementById("message");
@@ -129,6 +140,7 @@ async function fetchCardData(limit = TOTAL_PAIRS, state) {
 
     const data = await response.json();
 
+    //  🎉  Good error handling
     if (!Array.isArray(data) || data.length === 0) {
       console.warn("No cards received from API");
       return [];
@@ -218,12 +230,14 @@ function showWinMessage(state) {
    // Stop timer 
   stopTimer(state);
   
-  // 🎉 CONFETTI BURST
-  const confettiCanvas = document.querySelector("canvas"); // the one created by confetti
-if (confettiCanvas) {
-  confettiCanvas.style.zIndex = "9999";      // bring to front
-  confettiCanvas.style.pointerEvents = "none"; // clicks pass through
-}
+  //  🟡 [important] Directly manipulating a third-party library's DOM elements (the canvas
+  // created by confetti) is fragile. If canvas-confetti changes its implementation, this breaks.
+  // It works, but be aware of the tight coupling.
+  const confettiCanvas = document.querySelector("canvas");
+  if (confettiCanvas) {
+    confettiCanvas.style.zIndex = "9999";
+    confettiCanvas.style.pointerEvents = "none";
+  }
   confetti({
     particleCount: 150,
     spread: 120,
@@ -295,8 +309,6 @@ function restartGame(state) {
 }
 
 
-//win-btn for debugging 
-
-
+//  🟡 [important] These event listeners are outside DOMContentLoaded
 playAgainBtn.addEventListener("click", () => restartGame(gameState));
 document.getElementById("restartButton").addEventListener("click", () => restartGame(gameState));
