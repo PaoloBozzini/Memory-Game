@@ -77,8 +77,8 @@
 @media (max-width: 768px) {
   .game-board {
     width: 90vw;
-    gap: 0.8rem;
-    padding: 1rem;
+    gap: 0.5rem;
+    padding: 0.8rem;
   }
 }
 
