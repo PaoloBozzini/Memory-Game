@@ -4,7 +4,7 @@
   justify-content: center;
   font-family: "Lucida Grande", oblique, cursive;
   font-size: clamp(1rem, 3vw, 1.4rem);
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
@@ -12,15 +12,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width:fit-content;
-  padding-left: 0.5em;
-  padding-top: 0.1em;
-  padding-top: 0.1em;
-  padding-right: 0.5em;
+  width: fit-content;
+  padding: 0.1em 0.5em;
   background: linear-gradient(180deg, #53aaf2, #1c7ed6);
   color: #fff;
   font-size: clamp(1rem, 3vw, 1.5rem);
-  
+
   border-radius: 9999px;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
 }
