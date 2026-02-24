@@ -13,11 +13,8 @@
   align-items: center;
   justify-content: center;
   width:fit-content;
-  padding-left: 0.5em;
-  padding-top: 0.1em;
-  padding-top: 0.1em;
-  padding-right: 0.5em;
-  background: linear-gradient(180deg, #53aaf2, #1c7ed6);
+  padding:  0.1em 0.5em;
+   background: linear-gradient(180deg, #53aaf2, #1c7ed6);
   color: #fff;
   font-size: clamp(1rem, 3vw, 1.5rem);
   

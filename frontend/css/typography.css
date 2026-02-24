@@ -1,0 +1,35 @@
+body {
+  font-family: "Fredoka", cursive;
+  line-height: 1.5;
+  color: white;
+  font-weight: 500;
+}
+.win-title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.win-subtitle {
+  font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+  margin-bottom: 0.8rem;
+}
+
+.score-text {
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  margin: 0.8rem 0;
+}
+
+@media (max-width: 480px) {
+  .win-title {
+    font-size: 1.5rem;
+  }
+
+  .win-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .score-text {
+    font-size: 1rem;
+  }
+}
