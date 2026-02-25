@@ -114,13 +114,13 @@ function checkWinCondition(state) {
 
 
 // Fetch card data from API
-async function fetchCardData(limit = TOTAL_PAIRS, state) {
+async function fetchCardData(state,limit = 8) {
   const messageEl = document.getElementById("message");
-
+  
   try {
     
     const response = await fetch(
-      `/cards/all-cards/${limit}`
+      `/cards?limit=${limit}`
     );
 
     if (!response.ok) {
@@ -208,7 +208,7 @@ function createCards(state) {
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    fetchCardData(TOTAL_PAIRS, gameState);
+    fetchCardData(gameState,TOTAL_PAIRS);
 });
 
 //********************************************* Win message ***********************/

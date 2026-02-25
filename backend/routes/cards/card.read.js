@@ -1,15 +1,21 @@
 import express from "express";
-import knexInstance from "../../database.js";
+import knexInstance from "../../database/knexfile.js";
 
 const router=express.Router();
 
-router.get("/all-cards/:id", async (req, res) => {
+router.get("/", async (req, res) => {
   try{
-    const {id}=req.params;
-    const allCards=await knexInstance('cards')
+    const limit=Number(req.query.limit);
+
+    //validation
+    if (!Number.isInteger(limit) || limit  < 1 || limit > 50){
+      res.status(400).json({error:"Limit must be an integer between 1 and 50"});
+    }
+
+    const Cards=await knexInstance('cards')
     .select('*')
-    .limit(Number(id));
-    res.json(allCards);
+    .limit(limit);
+    res.json(Cards);
   }catch (error){
     res.status(500).json({error:"Failed to fetch cards"})};
 });
