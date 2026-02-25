@@ -1,12 +1,12 @@
 //********************************************* Java Script for Grid ***********************/
 const revealsEl = document.getElementById("reveals");
 const timerEl = document.getElementById("timer");
-const flipSound = new Audio("assets/flip.mp3");
+const flipSound = new Audio("assets/audio/flip.mp3");
 const winMessage = document.getElementById("win-message");
 const finalScore = document.getElementById("finalScore");
 const finalReveals = document.getElementById("finalReveals");
-const playAgainBtn = document.getElementById("play-again-btn");
-const winButton = document.getElementById("win-btn");
+const playAgainButton = document.getElementById("play-again-button");
+
 
 const TOTAL_PAIRS = 8;
 
@@ -190,7 +190,7 @@ function createCards(state) {
       cardDiv.innerHTML = `
         <div class="flip-card-inner">
       <div class="flip-card-back">
-          <img src="assets/back-card.png" alt="card back" />
+          <img src="assets/images/back-card.png" alt="card back" />
       </div>
       <div class="flip-card-front">
           <img src="${card.image}" alt="${card.name}" />
@@ -295,8 +295,8 @@ function restartGame(state) {
 }
 
 
-//win-btn for debugging 
 
 
-playAgainBtn.addEventListener("click", () => restartGame(gameState));
+
+playAgainButton.addEventListener("click", () => restartGame(gameState));
 document.getElementById("restartButton").addEventListener("click", () => restartGame(gameState));
