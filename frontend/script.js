@@ -120,7 +120,7 @@ async function fetchCardData(state,limit = 8) {
   try {
     
     const response = await fetch(
-      `http://localhost:3000/cards?limit=${limit}`
+      `/cards?limit=${limit}`
     );
 
     if (!response.ok) {
