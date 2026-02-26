@@ -5,7 +5,7 @@ import cardsRoutes from "./routes/cards/card.read.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
-import { error } from "console";
+
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -33,7 +33,7 @@ app.use("/cards", cardsRoutes);
 
 // Serve index.html on "/"
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, '..' ,"frontend, 'index.html'"));
+  res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
 });
 
 
