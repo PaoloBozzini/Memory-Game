@@ -2,16 +2,17 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 
-  gap: 0.8rem;
-  width: min(90vw, 90vh);
+  gap: clamp(0.4rem, 1.2vw, 0.8rem);
+  width: min(92vw, 70vh);
+    max-width: 38rem; 
 
-  padding: 1rem;
-  aspect-ratio: 1 / 1;
+  padding: clamp(0.5rem, 1.5vw, 1rem);
+ 
   margin: 0 auto;
 }
 
 .game-board .flip-card {
-  width: 80%;
+width: 100%;
   aspect-ratio: 1 / 1;
   transition: transform 0.3s ease;
 }
