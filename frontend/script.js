@@ -1,30 +1,32 @@
 //********************************************* Java Script for Grid ***********************/
 const revealsEl = document.getElementById("reveals");
 const timerEl = document.getElementById("timer");
-const flipSound = new Audio("assets/flip.mp3");
+const flipSound = new Audio("assets/audio/flip.mp3");
 const winMessage = document.getElementById("win-message");
 const finalScore = document.getElementById("finalScore");
 const finalReveals = document.getElementById("finalReveals");
-const playAgainBtn = document.getElementById("play-again-btn");
-const winButton = document.getElementById("win-btn");
-
-const TOTAL_PAIRS = 8;
+const playAgainButton = document.getElementById("play-again-button");
 
 //  🎉  As said, excellent use of a centralized state object! This avoids scattered globals,
 // makes the code testable, and is the foundation of state management in frameworks like React.
 // Game state
-const gameState={
-timer : 0,// Timer in seconds
-timerInterval : null,
-startTime : null, // Timestamp when timer starts
-flippedCards : [],
-counter : 0,
-canClick : true,
-matchedPairs : 0,
-gameCards : [],
-cardData : [], // Will be populated from API
-}
+const gameState = {
+  timer: 0, // Timer in seconds
+  timerInterval: null,
+  startTime: null, // Timestamp when timer starts
+  flippedCards: [],
+  counter: 0,
+  canClick: true,
+  matchedPairs: 0,
+  gameCards: [],
+  cardData: [], // Will be populated from API
+  topic: "food", //default topic
 
+  //Grid configuration
+  rows: 4,
+  cols: 4,
+  totalPairs: 8,
+};
 
 // Update displays
 function updateCounter(state) {
@@ -33,7 +35,7 @@ function updateCounter(state) {
 }
 
 // Flip card function
-function flipCard(cardElement,state) {
+function flipCard(cardElement, state) {
   if (!state.canClick) return;
   if (cardElement.classList.contains("flipped")) return;
 
@@ -41,9 +43,9 @@ function flipCard(cardElement,state) {
     startTimer(state);
   }
 
-// Play flip sound
-  flipSound.currentTime = 0;
-  flipSound.play(); //  🟡 [important] .play() returns a Promise that can reject (browser autoplay policy). Wrap: flipSound.play().catch(() => {});
+  // Play flip sound
+  flipSound.currentTime = 0; //
+  flipSound.play();
 
   cardElement.classList.add("flipped");
   state.flippedCards.push(cardElement);
@@ -57,9 +59,6 @@ function flipCard(cardElement,state) {
     const card1Id = state.flippedCards[0].getAttribute("data-card-id");
     const card2Id = state.flippedCards[1].getAttribute("data-card-id");
 
-
-
-    //  🔴 [blocking] Comment says "wait 1.5s" but setTimeout below uses 300ms, update to match the actual value.
     // wait 1.5s so player sees both cards
     setTimeout(() => {
       if (card1Id === card2Id) {
@@ -110,7 +109,7 @@ function handleMismatch(state) {
 }
 //check win condition
 function checkWinCondition(state) {
-  if (state.matchedPairs === TOTAL_PAIRS) {
+  if (state.matchedPairs === state.totalPairs) {
     // Player won!
     stopTimer(state);
     // delay for the last card seen by player
@@ -120,18 +119,13 @@ function checkWinCondition(state) {
   }
 }
 
-
-
-//  🟡 [important] Parameter order: default param (limit) before required param (state) is
-// unusual. Convention: required first → fetchCardData(state, limit = TOTAL_PAIRS)
 // Fetch card data from API
-async function fetchCardData(limit = TOTAL_PAIRS, state) {
+async function fetchCardData(state, limit = 8, topic = state.topic) {
   const messageEl = document.getElementById("message");
 
   try {
-    
     const response = await fetch(
-      `/cards/all-cards/${limit}`
+      `/cards?limit=${limit}&topic=${encodeURIComponent(topic)}`,
     );
 
     if (!response.ok) {
@@ -179,30 +173,35 @@ function shuffleCards(cards) {
   return shuffled;
 }
 
+function applyGridLayout(state) {
+  const grid = document.getElementById("card-grid");
+  // CSS Grid: set number of columns
+  grid.style.gridTemplateColumns = `repeat(${state.cols}, 1fr)`;
+}
+
 // Generate all cards and add to grid
 function createCards(state) {
   const gridContainer = document.getElementById("card-grid");
   gridContainer.innerHTML = ""; // Clear any existing cards
 
-  
-    // Initialize game cards
-    state.gameCards = shuffleCards(duplicateCards(state.cardData));
+  // Initialize game cards
+  state.gameCards = shuffleCards(duplicateCards(state.cardData));
 
-    state.gameCards.forEach((card, index) => {
-      // Create card HTML
-      const cardDiv = document.createElement("div");
-      cardDiv.className = "flip-card";
-      cardDiv.id = `card-${index}`;
-      cardDiv.setAttribute("data-card-id", card.id);
+  state.gameCards.forEach((card, index) => {
+    // Create card HTML
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "flip-card";
+    cardDiv.id = `card-${index}`;
+    cardDiv.setAttribute("data-card-id", card.id);
 
-      cardDiv.addEventListener("click", () => {
-        flipCard(cardDiv,state);
-      });
+    cardDiv.addEventListener("click", () => {
+      flipCard(cardDiv, state);
+    });
 
-      cardDiv.innerHTML = `
+    cardDiv.innerHTML = `
         <div class="flip-card-inner">
       <div class="flip-card-back">
-          <img src="assets/back-card.png" alt="card back" />
+          <img src="assets/images/back-card.png" alt="card back" />
       </div>
       <div class="flip-card-front">
           <img src="${card.image}" alt="${card.name}" />
@@ -210,39 +209,28 @@ function createCards(state) {
     </div>
     `;
 
-      gridContainer.appendChild(cardDiv);
-    });
- // });
+    gridContainer.appendChild(cardDiv);
+  });
+  // });
 }
-
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    
-    fetchCardData(TOTAL_PAIRS, gameState);
-});
 
 //********************************************* Win message ***********************/
 
 // Show Win Message
 function showWinMessage(state) {
-   // Stop timer 
+  // Stop timer
   stopTimer(state);
-  
-  //  🟡 [important] Directly manipulating a third-party library's DOM elements (the canvas
-  // created by confetti) is fragile. If canvas-confetti changes its implementation, this breaks.
-  // It works, but be aware of the tight coupling.
-  const confettiCanvas = document.querySelector("canvas");
+
+  // 🎉 CONFETTI BURST
+  const confettiCanvas = document.querySelector("canvas"); // the one created by confetti
   if (confettiCanvas) {
-    confettiCanvas.style.zIndex = "9999";
-    confettiCanvas.style.pointerEvents = "none";
+    confettiCanvas.style.zIndex = "9999"; // bring to front
+    confettiCanvas.style.pointerEvents = "none"; // clicks pass through
   }
   confetti({
     particleCount: 150,
     spread: 120,
-    origin: { y: 0.6 }
-    
+    origin: { y: 0.6 },
   });
 
   finalScore.textContent = timerEl.textContent;
@@ -253,8 +241,6 @@ function showWinMessage(state) {
 function hideWinMessage(state) {
   winMessage.classList.add("hidden");
 }
-
-
 
 //********************************************* Timer Functions ***********************/
 
@@ -288,27 +274,55 @@ function formatTime(seconds) {
   return `${min}:${sec}`;
 }
 
-
-  // Reset game state
-function restartGame(state) {
+// Reset game state (now async because we await fetch)
+async function restartGame(state) {
   hideWinMessage(state);
-
   resetTimer(state);
-  
+
   state.matchedPairs = 0;
   state.counter = 0;
   state.flippedCards = [];
   state.canClick = true;
 
   updateCounter(state);
- 
+  applyGridLayout(state);
 
-  // Recreate grid
-  createCards(state);
-
+  // Fetch new cards for current topic (createCards is called inside fetchCardData)
+  await fetchCardData(state, state.totalPairs, state.topic);
 }
 
+// Play again / restart
+playAgainButton.addEventListener("click", () => restartGame(gameState));
+document
+  .getElementById("restartButton")
+  .addEventListener("click", () => restartGame(gameState));
 
-//  🟡 [important] These event listeners are outside DOMContentLoaded
-playAgainBtn.addEventListener("click", () => restartGame(gameState));
-document.getElementById("restartButton").addEventListener("click", () => restartGame(gameState));
+// Topic buttons
+document.getElementById("food").addEventListener("click", () => {
+  gameState.topic = "food";
+  restartGame(gameState);
+});
+
+document.getElementById("school").addEventListener("click", () => {
+  gameState.topic = "school";
+  restartGame(gameState);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  applyGridLayout(gameState);
+  fetchCardData(gameState, gameState.totalPairs, gameState.topic);
+});
+
+document.getElementById("3-4button").addEventListener("click", () => {
+  gameState.rows = 3;
+  gameState.cols = 4;
+  gameState.totalPairs = (gameState.rows * gameState.cols) / 2; // 12/2 = 6
+  restartGame(gameState);
+});
+
+document.getElementById("4-4button").addEventListener("click", () => {
+  gameState.rows = 4;
+  gameState.cols = 4;
+  gameState.totalPairs = (gameState.rows * gameState.cols) / 2; // 16/2 = 8
+  restartGame(gameState);
+});

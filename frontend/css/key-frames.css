@@ -1,0 +1,31 @@
+/* animation for newly displayed buttons */
+@keyframes popIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+button.pop-in {
+  animation: popIn 0.3s ease forwards;
+}
+
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+.flip-card.matched {
+  animation: fadeOut 0.6s ease forwards;
+  pointer-events: none;
+}

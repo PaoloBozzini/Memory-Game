@@ -1,4 +1,5 @@
-.stats {
+.stats, .grid-selection, 
+.topic-selection {
   display: flex;
   gap: 1.5rem;
   justify-content: center;
@@ -6,19 +7,16 @@
   font-size: clamp(1rem, 3vw, 1.4rem);
   flex-wrap: wrap; 
   margin-bottom: 1rem;
-}
+  }
+
 
 .stat-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width:fit-content;
-  /*  🟡 [important] Consider using shorthand: padding: 0.1em 0.5em; */
-  padding-left: 0.5em;
-  padding-top: 0.1em;
-  padding-top: 0.1em;
-  padding-right: 0.5em;
-  background: linear-gradient(180deg, #53aaf2, #1c7ed6);
+  padding:  0.1em 0.5em;
+  background: linear-gradient(135deg, #38b000 0%, #17a7db 100% );
   color: #fff;
   font-size: clamp(1rem, 3vw, 1.5rem);
   
